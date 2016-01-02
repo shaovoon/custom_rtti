@@ -3,14 +3,6 @@
 
 namespace test
 {
-RTTI_DEFINITIONS(Shape)
-RTTI_DEFINITIONS(Circle)
-RTTI_DEFINITIONS(Triangle)
-RTTI_DEFINITIONS(Polygon)
-RTTI_DEFINITIONS(Rectangle)
-RTTI_DEFINITIONS(Square)
-RTTI_DEFINITIONS(Parallelogram)
-
 void Circle::Draw()
 {
 	std::cout << "Circle:" << std::endl;

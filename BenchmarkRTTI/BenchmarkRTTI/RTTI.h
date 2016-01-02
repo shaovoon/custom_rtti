@@ -1,6 +1,7 @@
 // Original author: Paul Varcholik
 // Forked author: Shao Voon Wong
 // version 0.1: Changed sRunTimeTypeId type from unsigned int to size_t
+// version 0.2: Replaced sRunTimeTypeId with a static local variable, so the class is a header only
 
 #pragma once
 
@@ -11,9 +12,13 @@ namespace Library
     class RTTI
     {
     public:
-        virtual const size_t& TypeIdInstance() const = 0;
+        virtual const size_t TypeIdInstance() const = 0;
         
-        virtual RTTI* QueryInterface(const size_t) const
+        virtual RTTI* QueryInterface(const size_t)
+        {
+            return nullptr;
+        }
+        virtual const RTTI* QueryInterface(const size_t) const
         {
             return nullptr;
         }
@@ -29,7 +34,17 @@ namespace Library
         }
 
         template <typename T>
-        T* As() const
+        T* As() 
+        {
+            if (Is(T::TypeIdClass()))
+            {
+                return (T*)this;
+            }
+
+            return nullptr;
+        }
+        template <typename T>
+        const T* As() const
         {
             if (Is(T::TypeIdClass()))
             {
@@ -43,19 +58,27 @@ namespace Library
 #define RTTI_DECLARATIONS(Type, ParentType)                            \
     public:                                                            \
         static std::string TypeName() { return std::string(#Type); }   \
-        virtual const size_t& TypeIdInstance() const                   \
+        virtual const size_t TypeIdInstance() const                    \
         { return Type::TypeIdClass(); }                                \
-        static  const size_t& TypeIdClass() { return sRunTimeTypeId; } \
-        virtual Library::RTTI* QueryInterface( const size_t id ) const \
+        static const size_t TypeIdClass()                              \
+        { static int d = 0; return (size_t) &d; }                      \
+        virtual Library::RTTI* QueryInterface( const size_t id )       \
         {                                                              \
-            if (id == sRunTimeTypeId)                                  \
+            if (id == TypeIdClass())                                   \
+                { return (RTTI*)this; }                                \
+            else                                                       \
+                { return ParentType::QueryInterface(id); }             \
+        }                                                              \
+        virtual const Library::RTTI* QueryInterface( const size_t id ) const \
+        {                                                              \
+            if (id == TypeIdClass())                                   \
                 { return (RTTI*)this; }                                \
             else                                                       \
                 { return ParentType::QueryInterface(id); }             \
         }                                                              \
         virtual bool Is(const size_t id) const                         \
         {                                                              \
-            if (id == sRunTimeTypeId)                                  \
+            if (id == TypeIdClass())                                  \
                 { return true; }                                       \
             else                                                       \
                 { return ParentType::Is(id); }                         \
@@ -66,10 +89,5 @@ namespace Library
                 { return true; }                                       \
             else                                                       \
                 { return ParentType::Is(name); }                       \
-        }                                                              \
-   private:                                                            \
-        static size_t sRunTimeTypeId;
-
-#define RTTI_DEFINITIONS(Type) \
-    size_t Type::sRunTimeTypeId = (size_t)& Type::sRunTimeTypeId;
+        }                                                              
 }
