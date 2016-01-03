@@ -1,7 +1,7 @@
 // Original author: Paul Varcholik
 // Forked author: Shao Voon Wong
 // version 0.1: Changed sRunTimeTypeId type from unsigned int to size_t
-// version 0.2: Replaced sRunTimeTypeId with a static local variable, so the class is a header only
+// version 0.2: Replaced sRunTimeTypeId with a static local variable, so the class is a header only. Credit: Andrew Fedoniouk aka c-smile
 
 #pragma once
 
