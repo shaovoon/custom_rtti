@@ -32,12 +32,12 @@ public:
 		::timeEndPeriod(wTimerRes);
 	}
 
-	void start_timing(const std::string& text_)
+	void start(const std::string& text_)
 	{
 		text = text_;
 		begin = timeGetTime();
 	}
-	void stop_timing()
+	void stop()
 	{
 		DWORD end = timeGetTime();
 		DWORD timing = end-begin;
@@ -57,12 +57,12 @@ class timer
 {
 public: 
 	timer() = default;
-	void start_timing(const std::string& text_)
+	void start(const std::string& text_)
 	{
 		text = text_;
 		begin = std::chrono::high_resolution_clock::now();
 	}
-	void stop_timing()
+	void stop()
 	{
 		auto end = std::chrono::high_resolution_clock::now();
 		auto dur = end - begin;
@@ -72,6 +72,6 @@ public:
 
 private:
 	std::string text;
-	std::chrono::system_clock::time_point begin;
+	std::chrono::high_resolution_clock::time_point begin;
 };
 #endif

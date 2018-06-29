@@ -8,8 +8,8 @@ LINKOBJ  = BenchmarkRTTI.o timer.o Shapes.o $(RES)
 LIBS     = 
 CXXINCS  = 
 BIN      = BenchmarkRTTI.exe
-CXXFLAGS = -Wall -O2 -DCPP11 $(CXXINCS)
-CFLAGS   = -Wall -O2  
+CXXFLAGS = -Wall -O1 -DCPP11 $(CXXINCS)
+CFLAGS   = -Wall -O1  
 RM       = rm -f
 
 .PHONY: all all-before all-after clean clean-custom

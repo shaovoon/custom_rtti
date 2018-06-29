@@ -43,18 +43,18 @@ int main()
 
 	const size_t LOOP = 1000000;
 	timer stopwatch;
-	stopwatch.start_timing("DynamicCast");
+	stopwatch.start("DynamicCast");
 	for(size_t i=0; i<LOOP; ++i)
 	{
 		testDynamicCast(vec);
 	}
-	stopwatch.stop_timing();
-	stopwatch.start_timing("AsCast");
+	stopwatch.stop();
+	stopwatch.start("AsCast");
 	for(size_t i=0; i<LOOP; ++i)
 	{
 		testAsCast(vec);
 	}
-	stopwatch.stop_timing();
+	stopwatch.stop();
 	destroyVector(vec);
 	return 0;
 }
